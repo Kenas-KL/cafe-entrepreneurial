@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-r from-orange-950 via-blue-400 to-green-400 opacity-80 animate-gradient text-white py-20 md:py-28">
+  <div class="absolute inset-0 opacity-10 bg-[url('https://www.svgrepo.com/show/532480/coffee.svg')] bg-center bg-contain bg-no-repeat"></div>
+  <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
+    <span class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold uppercase">1ère Édition</span>
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-6 mt-4">☕ Café des Entrepreneurs de Kalemie</h1>
+    <p class="text-lg md:text-2xl mb-8 max-w-3xl mx-auto">« Comment capitaliser nos services pour mieux répondre aux besoins des clients »</p>
+    <button onclick="openForm()" class="bg-white text-blue-600 font-semibold px-6 md:px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition">
+      Réserver une place
+    </button>
+  </div>
+</section>
+
+<!-- Photo Symbolique -->
+<section class="my-2 bg-white">
+  <div class="w-full">
+    <img src="{% static 'images/image.png' %}" alt="Networking Entrepreneurs"
+         class="w-full sm:h-80 md:h-80 object-cover">
+  </div>
+</section>
+
+<!-- Infos Event -->
+<section class="py-16 bg-gray-50">
+.
+  <div class="max-w-5xl mx-auto px-6 grid gap-8 text-center md:grid-cols-3">
+    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
+      <h3 class="text-xl md:text-2xl font-bold mb-3">📅 Date</h3>
+      <p class="text-base md:text-lg">24 octobre 2025 <br> 09h30 – 14h00</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
+      <h3 class="text-xl md:text-2xl font-bold mb-3">📍 Lieu</h3>
+      <p class="text-base md:text-lg">Restaurant Flora Plazza – Kalemie</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
+      <h3 class="text-xl md:text-2xl font-bold mb-3">📞 Contacts</h3>
+      <p class="text-base md:text-lg">
+        +243 978 369 313<br>
+      </p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
+      <h3 class="text-xl md:text-2xl font-bold mb-3">Mail</h3>
+      <p class="text-base md:text-lg">
+        info@spc-enterprise.net<br>
+      </p>
+    </div>
+  </div>
+  
+</section>
+
+<!-- Call to Action -->
+<section class="bg-gradient-to-r from-green-500 via-cyan-500 to-orange-950 text-white py-16 text-center px-6">
+  <h2 class="text-2xl md:text-3xl font-extrabold mb-4">🚀 Participez, inspirez et soyez inspirés !</h2>
+  <p class="text-base md:text-lg mb-6">Ensemble, faisons grandir l’esprit entrepreneurial de Kalemie 🌟</p>
+  <button onclick="openForm()" class="bg-white text-green-600 font-semibold px-6 md:px-8 py-3 rounded-lg shadow-md hover:bg-gray-100 transition">
+    Je réserve ma place
+  </button>
+</section>
+
+<!-- Popup Formulaire -->
+<div id="formModal" class="fixed inset-0 hidden flex items-center justify-center bg-black/50 backdrop-blur-md z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 relative">
+
+    <!-- Bouton fermer -->
+    <button onclick="closeForm()" class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
+
+    <!-- Progression -->
+    <div class="mb-6">
+      <div class="w-full bg-gray-200 h-2 rounded-full">
+        <div id="progressBar" class="bg-blue-600 h-2 rounded-full w-1/8 transition-all duration-300"></div>
+      </div>
+      <p id="stepCounter" class="text-sm text-gray-500 mt-2 text-center">Étape 1 sur 8</p>
+    </div>
+
+    <form id="reservationForm" action="{% url 'cafe_app:success' %}" method="POST" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Step 1 -->
+      <div class="step">
+        <label class="block text-sm font-semibold mb-2">Êtes-vous Entrepreneur ?*</label>
+        <select name="entrepreneur" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+          <option value="">Sélectionnez...</option>
+          <option value="Oui">Oui</option>
+          <option value="Non">Non</option>
+        </select>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Nom de l'entreprise*</label>
+        <div class="text-gray-500 text-xs mb-1">Votre nom si vous n'êtes entrepreneur</div>
+        <input type="text" name="nom" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Votre poste en entreprise*</label>
+        <div class="text-gray-500 text-xs mb-1">Ce que vous êtes si vous n'êtes pas en entreprise</div>
+        <input type="text" name="about" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Adresse électronique*</label>
+        <input type="email" name="email" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Adresse physique*</label>
+        <input type="text" name="adresse" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Secteur d'activités*</label>
+        <select name="secteur" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+          <option value="">Sélectionnez...</option>
+          <option value="Services Financiers">Services Financiers (Banques, Assurances, Investissement)</option>
+          <option value="Transports et Logistique">Transports et Logistique (Aérien, Maritime, Routier)</option>
+          <option value="Hôtellerie, Restauration et Tourisme">Hôtellerie, Restauration et Tourisme</option>
+          <option value="Technologies de l'Information et de la Communication">Technologies de l'Information et de la Communication (TIC)</option>
+          <option value="Conseil et Services aux Entreprises">Conseil et Services aux Entreprises (Juridique, Comptabilité)</option>
+          <option value="Événementiel et Médias">Événementiel et Médias</option>
+          <option value="Santé et Éducation">Santé et Éducation</option>
+          <option value="Agro-industrie">Agro-industrie (Transformation de produits agricoles)</option>
+          <option value="Industrie Manufacturière">Industrie Manufacturière (Textile, Automobile, Chimie)</option>
+          <option value="Bâtiment et Travaux Publics">Bâtiment et Travaux Publics (BTP)</option>
+          <option value="Production et Distribution d'Énergie">Production et Distribution d'Énergie</option>
+          <option value="Agriculture et Élevage">Agriculture et Élevage</option>
+          <option value="Industries Extractives">Industries Extractives (Mines, Carrières)</option>
+          <option value="Pêche et Sylviculture">Pêche et Sylviculture</option>
+          <option value="Autres...">Autres...</option>
+        </select>
+      </div>
+      <!-- Step 6 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Pourquoi voulez-vous participer ?*</label>
+        <select name="motivation" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+          <option value="">Sélectionnez...</option>
+          <option value="Rencontrer de nouvelles personnes">Rencontrer de nouvelles personnes</option>
+          <option value="Opportunité de travail">Opportunité de travail</option>
+          <option value="Apprendre plus sur l'entrepreneuriat">Apprendre plus sur l'entrepreneuriat</option>
+          <option value="Promouvoir son entreprise">Promouvoir son entreprise</option>
+        </select>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="step hidden">
+        <label class="block text-sm font-semibold mb-2">Souhaitez-vous être partenaire ou sponsor ?*</label>
+        <select name="partenaire" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+          <option value="">Sélectionnez...</option>
+          <option value="Aucun">Aucun</option>
+          <option value="Partenaire">Partenaire</option>
+          <option value="Sponsor">Sponsor</option>
+        </select>
+      </div>
+
+      <!-- Step 8 - Confirmation -->
+      <div class="step hidden text-center">
+        <h3 class="text-xl font-bold mb-4">✅ Êtes-vous prêt à valider votre réservation ?</h3>
+        <p class="text-gray-600 mb-6">Vérifiez bien vos informations avant de confirmer.</p>
+        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+          Valider ✅
+        </button>
+      </div>
+
+      <!-- Boutons navigation -->
+      <div class="flex justify-between mt-6">
+        <button type="button" onclick="prevStep()" class="hidden bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition" id="prevBtn">
+          ⬅ Précédent
+        </button>
+        <button type="button" onclick="nextStep()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition" id="nextBtn">
+          Suivant ➡
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-6 text-center">
+  <p>© 2025 Café des Entrepreneurs – Par Soft Planet Company en collaboration avec Rango Event'services</p>
+</footer>
+
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll(".step");
+const progressBar = document.getElementById("progressBar");
+const stepCounter = document.getElementById("stepCounter");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const formModal = document.getElementById("formModal");
+const form = document.getElementById("reservationForm");
+
+function openForm() {
+  formModal.classList.remove("hidden");
+  showStep(currentStep);
+}
+function closeForm() {
+  formModal.classList.add("hidden");
+  form.reset();
+  currentStep = 0;
+  showStep(currentStep);
+}
+
+function showStep(n) {
+  steps.forEach((step, i) => step.classList.toggle("hidden", i !== n));
+  stepCounter.textContent = `Étape ${n + 1} sur ${steps.length}`;
+  progressBar.style.width = ((n + 1) / steps.length) * 100 + "%";
+
+  prevBtn.classList.toggle("hidden", n === 0);
+  nextBtn.classList.toggle("hidden", n === steps.length - 1);
+}
+
+function nextStep() {
+  const input = steps[currentStep].querySelector("input, select");
+  if (input && !input.checkValidity()) {
+    input.reportValidity();
+    return;
+  }
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    showStep(currentStep);
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    showStep(currentStep);
+  }
+}
+</script>
+
+{% endblock content %}
